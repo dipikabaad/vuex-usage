@@ -108,7 +108,7 @@
             },
             [ADD_PRODUCT_TO_CART]() {
                 // TODO: Implement
-            this.$store.commit('addProductToCart', {product: this.product,
+            this.$store.dispatch(ADD_PRODUCT_TO_CART, {product: this.product,
                     quantity: 1
                 });
 

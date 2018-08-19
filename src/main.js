@@ -26,6 +26,21 @@ const store = new Vuex.Store({
                 items: []
         }
     },
+    actions:{
+        [ADD_PRODUCT_TO_CART]({commit}, payload){
+            //context.commit(ADD_PRODUCT_TO_CART, payload);
+            let requestUrl = 'http://localhost:3000/cart/add/{productId}/{quantity}';
+            Vue.http.post( requestUrl, {}, {
+                params: {
+                        productId: payload.product.id,
+                        quantity: payload.quantity
+                    }
+                }).then(
+                    response => commit(ADD_PRODUCT_TO_CART, payload),
+                    response => alert("Coould not add product to cart");
+                );
+        }
+    },
     getters: {
         cartTotal: (state) => {
             let total =0;
