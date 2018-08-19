@@ -37,6 +37,12 @@
 
                 <td>{{ taxAmount(10) | currency }}</td>
             </tr>
+            <tr>
+                <td class="text-right" colspan="2">
+                    <strong>Coupon Code</strong>
+                </td>
+                <td><input type="text" class="form-control" placeholder="Enter coupon code here" style="..."></td>
+            </tr>
 
             <tr>
                 <td class="text-right" colspan="2">
@@ -47,9 +53,14 @@
             </tr>
 
             <tr>
-                <td colspan="2"></td>
+                <td class="text-right" colspan="2">
+                    <span v-if="couponCode">
+                        <em>Lucky you! You entered the following cooupon code: {{ couponCode }}</em>
+                    </span>
+                </td>
                 <td><button class="btn btn-success" @click="checkout">Checkout</button></td>
             </tr>
+
             </tbody>
         </table>
 
@@ -60,7 +71,7 @@
 <script>
     import { mapGetters } from  'vuex';
     import {mapMutations} from 'vuex';
-    import {CHECKOUT} from './mutation-types';
+    import {CHECKOUT, UPDATE_COUPON_CODE} from './mutation-types';
     export default {
         computed:{
             ...mapGetters([
@@ -71,6 +82,15 @@
                 return this.$store.state.cart;
             },
 
+            couponCode: {
+                get(){
+                return this.$store.state.couponCode;
+                },
+                set(value){
+                    this.$store.commit(UPDATE_COUPON_CODE, value);
+                }
+
+            }
 
             /*cartTotal(){
                 return this.$store.getters.cartTotal;

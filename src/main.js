@@ -4,7 +4,7 @@ import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import App from './App.vue';
 import { routes } from './routes';
-import { ADD_PRODUCT_TO_CART, CHECKOUT, INCREASE_PRODUCT_QUANTITY} from './mutation-types'
+import { ADD_PRODUCT_TO_CART, CHECKOUT, INCREASE_PRODUCT_QUANTITY, UPDATE_COUPON_CODE} from './mutation-types'
 
 Vue.filter('currency', function(value) {
     let formatter = new Intl.NumberFormat('en-US', {
@@ -24,7 +24,8 @@ const store = new Vuex.Store({
     state:{
         cart:{
                 items: []
-        }
+        },
+        couponCode: ''
     },
     actions:{
         [ADD_PRODUCT_TO_CART]({commit, getters}, payload){
@@ -140,6 +141,10 @@ const store = new Vuex.Store({
         [INCREASE_PRODUCT_QUANTITY] (state, payload){
             payload.cartItem.quantity += payload.quantity;
             payload.product.inStock -= payload.quantity;
+        },
+
+        [UPDATE_COUPON_CODE](state, payload){
+            state.couponCode = payload;
         }
     }
 
