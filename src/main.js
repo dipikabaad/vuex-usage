@@ -33,6 +33,9 @@ const store = new Vuex.Store({
                 total += item.product.price * item.quantity;
             });
             return total;
+        },
+        taxAmount: (state, getters) => {
+            return ((getters.cartTotal * 10)/100);
         }
     }
 
