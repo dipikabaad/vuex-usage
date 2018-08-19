@@ -34,14 +34,17 @@
 </template>
 
 <script>
+    import { mapGetters } from  'vuex';
+
     export default {
         computed:{
+            ...mapGetters({
+                cartTotal: 'cartTotal'
+            }),
             cart(){
                 return this.$store.state.cart;
             },
-            cartTotal(){
-                return this.$store.getters.cartTotal;
-            }
+
         }
     }
 </script>
