@@ -60,6 +60,7 @@
 <script>
     import { mapGetters } from  'vuex';
     import {mapMutations} from 'vuex';
+    import {CHECKOUT} from './mutation-types';
     export default {
         computed:{
             ...mapGetters([
@@ -100,7 +101,7 @@
         },
         methods:{
             ...mapMutations([
-                'checkout'
+                CHECKOUT
             ])
         }
     }

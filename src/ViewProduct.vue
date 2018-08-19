@@ -54,6 +54,7 @@
 </template>
 
 <script>
+    import {ADD_PRODUCT_TO_CART} from './mutation-types';
     export default {
         props: {
             productId: {
@@ -105,7 +106,7 @@
             deleteReview(review) {
                 // TODO: Implement
             },
-            addProductToCart() {
+            [ADD_PRODUCT_TO_CART]() {
                 // TODO: Implement
             this.$store.commit('addProductToCart', {product: this.product,
                     quantity: 1
