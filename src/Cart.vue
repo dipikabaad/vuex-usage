@@ -67,7 +67,7 @@
                 return this.$store.getters.cartTotal;
             },
             taxAmount(){
-                return this.$store.getters.taxAmount;
+                return this.$store.getters.taxAmount(100);
             }
         },
 

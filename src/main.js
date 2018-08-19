@@ -34,9 +34,16 @@ const store = new Vuex.Store({
             });
             return total;
         },
-        taxAmount: (state, getters) => {
+        //es6 syntax for following
+        taxAmount: (state, getters) => (percentage) => {
             return ((getters.cartTotal * 10)/100);
         }
+        /*taxAmount: (state, getters) => {
+            return function(percentage){
+                return ((getters.cartTotal * 10)/100);
+            };
+            
+        }*/
     }
 
 });
