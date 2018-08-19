@@ -28,36 +28,55 @@ const store = new Vuex.Store({
     },
     actions:{
         [ADD_PRODUCT_TO_CART]({commit, getters}, payload){
-            //context.commit(ADD_PRODUCT_TO_CART, payload);
-            let cartItem = getters.getCartItem(payload.product);
-            payload.cartItem = cartItem;
+            
+            return new Promise((resolve, reject) => {
+                let cartItem = getters.getCartItem(payload.product);
+                payload.cartItem = cartItem;
 
 
-            if (cartItem == null){
-                let requestUrl = 'http://localhost:3000/cart/add/{productId}/{quantity}';
+                if (cartItem == null){
+                    let requestUrl = 'http://localhost:3000/cart/add/{productId}/{quantity}';
+                    Vue.http.post( requestUrl, {}, {
+                    params: {
+                            productId: payload.product.id,
+                            quantity: payload.quantity
+                        }
+                    }).then(
+                        response => {
+
+                            commit(ADD_PRODUCT_TO_CART, payload);
+                            resolve();
+                        },
+                        response =>{ 
+                            alert("Coould not add product to cart");
+                            reject();
+                        }
+                    );
+
+                } else {
+                    let requestUrl = 'http://localhost:3000/cart/increase-quantity/{productId}';
                 Vue.http.post( requestUrl, {}, {
-                params: {
-                        productId: payload.product.id,
-                        quantity: payload.quantity
-                    }
-                }).then(
-                    response => commit(ADD_PRODUCT_TO_CART, payload),
-                    response => alert("Coould not add product to cart")
-                );
+                    params: {
+                            productId: payload.product.id,
+                            
+                        }
+                    }).then(
+                        response => {
+                            commit(INCREASE_PRODUCT_QUANTITY, payload);
+                            resolve();
+                        },
+                        response => {
+                             alert("Coould not increase product quantity");
+                             reject();
+                        }
+                    );
 
-            } else {
-                let requestUrl = 'http://localhost:3000/cart/increase-quantity/{productId}';
-            Vue.http.post( requestUrl, {}, {
-                params: {
-                        productId: payload.product.id,
-                        
-                    }
-                }).then(
-                    response => commit(INCREASE_PRODUCT_QUANTITY, payload),
-                    response => alert("Coould not increase product quantity")
-                );
+                }
 
-            }
+            })
+
+            //context.commit(ADD_PRODUCT_TO_CART, payload);
+
 
 
             

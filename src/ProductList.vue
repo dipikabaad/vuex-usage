@@ -70,7 +70,11 @@
             [ADD_PRODUCT_TO_CART](product, quantity){
                 this.$store.dispatch(ADD_PRODUCT_TO_CART, {product: product,
                     quantity: quantity
-                });
+                }).then(
+                    () => alert("cart was updated")
+                );
+
+                
             }
         }
     }
