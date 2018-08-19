@@ -55,7 +55,7 @@ const store = new Vuex.Store({
 
                 } else {
                     let requestUrl = 'http://localhost:3000/cart/increase-quantity/{productId}';
-                Vue.http.post( requestUrl, {}, {
+                    Vue.http.post( requestUrl, {}, {
                     params: {
                             productId: payload.product.id,
                             
