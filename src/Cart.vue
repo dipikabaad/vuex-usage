@@ -59,6 +59,7 @@
 
 <script>
     import { mapGetters } from  'vuex';
+    import {mapMutations} from 'vuex';
     export default {
         computed:{
             ...mapGetters([
@@ -98,12 +99,9 @@
             next();
         },
         methods:{
-            checkout(){
-                if(confirm('Are you sure you want to purchase these products?')){
-
-                    this.$store.commit('checkout');
-                }
-            }
+            ...mapMutations([
+                'checkout'
+            ])
         }
     }
 </script>
