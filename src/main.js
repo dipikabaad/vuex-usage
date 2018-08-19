@@ -37,7 +37,9 @@ const store = new Vuex.Store({
         //es6 syntax for following
         taxAmount: (state, getters) => (percentage) => {
             return ((getters.cartTotal * 10)/100);
-        }
+        },
+
+
         /*taxAmount: (state, getters) => {
             return function(percentage){
                 return ((getters.cartTotal * 10)/100);
@@ -54,7 +56,32 @@ const store = new Vuex.Store({
                 state.cart.items = [];
                
             
-        }
+        },
+        addProductToCart(state, payload) {
+
+                let cartItem = null
+                // TODO: Implement
+                for (let i = 0; i < state.cart.items.length; i++){
+                    if (state.cart.items[i].product.id == payload.product.id){
+                        cartItem =  state.cart.items[i];
+                    }
+                }
+
+                
+
+                if(cartItem != null){
+                    cartItem.quantity += payload.quantity; 
+                } else {
+                    state.cart.items.push({
+                        product: payload.product,
+                        quantity: payload.quantity
+                    });
+                }
+
+                payload.product.inStock -= payload.quantity;
+
+
+            }
     }
 
 });

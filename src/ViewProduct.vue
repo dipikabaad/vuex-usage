@@ -107,31 +107,14 @@
             },
             addProductToCart() {
                 // TODO: Implement
-                let cartItem = this.getCartItems(this.product);
+            this.$store.commit('addProductToCart', {product: this.product,
+                    quantity: 1
+                });
 
-                if(cartItem != null){
-                    cartItem.quantity++; 
-                } else {
-                    this.cart.items.push({
-                        product: this.product,
-                        quantity: 1
-                    });
-                }
-
-                this.product.inStock--;
-                this.cartTotal += this.product.price;
 
             },
 
-            getCartItems(product){
-                for (let i = 0; i < this.cart.items.length; i++){
-                    if (this.cart.items[i].product.id == product.id){
-                        return this.cart.items[i];
-                    }
-                }
-
-                return null;
-            }
+  
         }
     }
 </script>
