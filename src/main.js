@@ -44,6 +44,17 @@ const store = new Vuex.Store({
             };
             
         }*/
+    },
+    mutations: {
+        checkout(state){
+            
+                state.cart.items.forEach(function(item){
+                     item.product.inStock += iterm.quantity;
+                 });
+                state.cart.items = [];
+               
+            
+        }
     }
 
 });

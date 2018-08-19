@@ -96,6 +96,14 @@
             }
 
             next();
+        },
+        methods:{
+            checkout(){
+                if(confirm('Are you sure you want to purchase these products?')){
+
+                    this.$store.commit('checkout');
+                }
+            }
         }
     }
 </script>
