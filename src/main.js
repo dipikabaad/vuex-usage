@@ -4,7 +4,7 @@ import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import App from './App.vue';
 import { routes } from './routes';
-import { ADD_PRODUCT_TO_CART, CHECKOUT} from './mutation-types'
+import { ADD_PRODUCT_TO_CART, CHECKOUT, INCREASE_PRODUCT_QUANTITY} from './mutation-types'
 
 Vue.filter('currency', function(value) {
     let formatter = new Intl.NumberFormat('en-US', {
@@ -27,18 +27,40 @@ const store = new Vuex.Store({
         }
     },
     actions:{
-        [ADD_PRODUCT_TO_CART]({commit}, payload){
+        [ADD_PRODUCT_TO_CART]({commit, getters}, payload){
             //context.commit(ADD_PRODUCT_TO_CART, payload);
-            let requestUrl = 'http://localhost:3000/cart/add/{productId}/{quantity}';
-            Vue.http.post( requestUrl, {}, {
+            let cartItem = getters.getCartItem(payload.product);
+            payload.cartItem = cartItem;
+
+
+            if (cartItem == null){
+                let requestUrl = 'http://localhost:3000/cart/add/{productId}/{quantity}';
+                Vue.http.post( requestUrl, {}, {
                 params: {
                         productId: payload.product.id,
                         quantity: payload.quantity
                     }
                 }).then(
                     response => commit(ADD_PRODUCT_TO_CART, payload),
-                    response => alert("Coould not add product to cart");
+                    response => alert("Coould not add product to cart")
                 );
+
+            } else {
+                let requestUrl = 'http://localhost:3000/cart/increase-quantity/{productId}';
+            Vue.http.post( requestUrl, {}, {
+                params: {
+                        productId: payload.product.id,
+                        
+                    }
+                }).then(
+                    response => commit(INCREASE_PRODUCT_QUANTITY, payload),
+                    response => alert("Coould not increase product quantity")
+                );
+
+            }
+
+
+            
         }
     },
     getters: {
@@ -54,6 +76,17 @@ const store = new Vuex.Store({
         taxAmount: (state, getters) => (percentage) => {
             return ((getters.cartTotal * 10)/100);
         },
+
+        getCartItem: (state) => (product) => {
+                            let cartItem = null
+                // TODO: Implement
+                for (let i = 0; i < state.cart.items.length; i++){
+                    if (state.cart.items[i].product.id == product.id){
+                        return state.cart.items[i];
+                    }
+                }
+                return null;
+        }
 
 
         /*taxAmount: (state, getters) => {
@@ -75,29 +108,20 @@ const store = new Vuex.Store({
         },
         [ADD_PRODUCT_TO_CART](state, payload) {
 
-                let cartItem = null
-                // TODO: Implement
-                for (let i = 0; i < state.cart.items.length; i++){
-                    if (state.cart.items[i].product.id == payload.product.id){
-                        cartItem =  state.cart.items[i];
-                    }
-                }
-
-                
-
-                if(cartItem != null){
-                    cartItem.quantity += payload.quantity; 
-                } else {
                     state.cart.items.push({
                         product: payload.product,
                         quantity: payload.quantity
                     });
-                }
-
                 payload.product.inStock -= payload.quantity;
 
+                
 
-            }
+
+            },
+        [INCREASE_PRODUCT_QUANTITY] (state, payload){
+            payload.cartItem.quantity += payload.quantity;
+            payload.product.inStock -= payload.quantity;
+        }
     }
 
 });
