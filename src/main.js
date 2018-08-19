@@ -23,8 +23,17 @@ const store = new Vuex.Store({
     state:{
         cart:{
                 items: []
-        },
-        cartTotal: 0
+        }
+    },
+    getters: {
+        cartTotal: (state) => {
+            let total =0;
+
+            state.cart.items.forEach(function(item){
+                total += item.product.price * item.quantity;
+            });
+            return total;
+        }
     }
 
 });

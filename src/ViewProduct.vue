@@ -73,14 +73,6 @@
         computed:{
             cart(){
                 return this.$store.state.cart;
-            },
-            cartTotal: {
-                get: function(){
-                    return this.$store.state.cartTotal;
-                },
-                set: function(value){
-                    this.$store.state.cartTotal = value;
-                }
             }
         },
         created() {
